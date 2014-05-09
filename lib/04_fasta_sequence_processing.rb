@@ -27,9 +27,9 @@ module FastaProcessing
     end
 end
 
-def parse_fasta_string(fasta_data)
+def retrieve_sequences_from_fasta(fasta_data_path)
     sequences = []
-    raw_lines = File.readlines(fasta_data)
+    raw_lines = File.readlines(fasta_data_path)
     raw_lines.each_with_index do |line, line_index|
         line.chomp!
         if line[0] == ">"
@@ -42,10 +42,12 @@ def parse_fasta_string(fasta_data)
             sequences[-1].sequence.concat(line)
         end
     end
-    p sequences
+    sequences
+end
+
+def gc_content_retrieval(sequences)
     (sequences.sort {|a, b| b.gc_content <=> a.gc_content}).each do |sequence|
         puts sequence.name
         puts sequence.gc_content
     end
-    sequences
 end
